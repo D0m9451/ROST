@@ -14,19 +14,11 @@ fn count() {
     ifelse(x, y);
 }
 
-fn ifelse(x: f64, y: f64) {
-    let mut count = 0;
-    while true {
-        if x < 0.0 {
-            let mut x = y*x;
-            println!("{}", x);
-        }
-        else {
-            let mut x = 3.185*(y*x);
-        }
-        count += 1;
-        if x < 0.0 {
-            break;
-        }
+fn ifelse(x: f64, _y: f64) {
+    if x %2.0 == 0.0 {
+        println!("{} is a even number!", x)
+    }
+    else {
+        println!("{} is an odd number!", x)
     }
 }
