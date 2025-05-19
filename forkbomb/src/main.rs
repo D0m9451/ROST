@@ -37,6 +37,6 @@ fn main() {
                 .spawn()
                 .expect("Failed to open terminal window");
         }
-        
+
     }
 }
