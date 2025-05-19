@@ -24,7 +24,7 @@ fn main() {
     for _i in 0..5 {
         Command::new("cmd")
             .args(&["/C", "start", "cmd", "/K", "echo Hello from new terminal!"])
-            .spawn(main())
+            .spawn()
             .expect("Failed to open terminal window");
     }
 }
