@@ -21,10 +21,12 @@ fn open_terminal_with_command(command: &str) {
 use std::process::Command;
 
 fn main() {
-    for _i in 0..5 {
+    let mut i = 0;
+    while i < 5 {
         Command::new("cmd")
-            .args(&["/C", "start", "cmd", "/K", "echo Hello from new terminal!"])
+            .args(&["/C", "start", "cmd", "/K", "echo BOOM!"])
             .spawn()
             .expect("Failed to open terminal window");
+        i +=1;
     }
 }
