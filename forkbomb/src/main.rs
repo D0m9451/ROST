@@ -19,14 +19,24 @@ fn open_terminal_with_command(command: &str) {
             .expect("Failed to open terminal on Linux");
 */
 use std::process::Command;
+use std::env;
 
 fn main() {
-    let mut i = 0;
-    while i < 5 {
-        Command::new("cmd")
-            .args(&["/C", "start", "cmd", "/K", "echo BOOM!"])
-            .spawn()
-            .expect("Failed to open terminal window");
-        i +=1;
+    let depth = env::var("DEPTH").unwrap_or_else(|_| "0".to_string())
+        .parse::<u32>().unwrap();
+    let exe = env::current_exe().expect("could not find exe :(");
+
+    if depth < 3 {
+        println!("Spawning 3 processes at depth: {}", depth + 1);
+
+        for _ in 0..3{
+            Command::new("cmd")
+                .args(&["/K", "start"])
+                .arg(&exe)
+                .env("DEPTH", (depth + 1) .to_string())
+                .spawn()
+                .expect("Failed to open terminal window");
+        }
+        
     }
 }
