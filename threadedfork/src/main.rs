@@ -1,7 +1,7 @@
 use std::thread;
 
 fn fork(depth: u32) {
-    println!("hi! {}", depth);
+    /*println!("hi! {}", depth);*/
     
     if depth < 5 {
         for _ in 0..2 {
