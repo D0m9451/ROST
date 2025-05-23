@@ -1,5 +1,7 @@
 use std::net::{UdpSocket, TcpListener, IpAddr, SocketAddr};
 use std::io::Read;
+use std::net::TcpStream;
+use std::io::Write;
 
 fn tcp(local_ip: IpAddr) {
     let addr = SocketAddr::new(local_ip, 8080);
