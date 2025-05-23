@@ -1,1 +1,1 @@
-C:\Users\Domin\Downloads\Programminn\repo\ROST\worm\target\debug\worm.exe: C:\Users\Domin\Downloads\Programminn\repo\ROST\worm\src\main.rs
+C:\Users\Domin\Downloads\ComputerScience\Programs\ROST\worm\target\debug\worm.exe: C:\Users\Domin\Downloads\ComputerScience\Programs\ROST\worm\src\main.rs
