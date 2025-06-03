@@ -1,17 +1,23 @@
-use std::net::{UdpSocket, TcpListener, IpAddr, SocketAddr};
+use std::net::{UdpSocket, TcpListener, IpAddr, SocketAddr,TcpStream};
 use std::io::Write;
+use std::str::FromStr;
+use std::process::Command;
+use std::io::{self, BufRead};
 
-fn send(depth: u32, addr:IpAddr) {
+
+fn send(depth: u32, addr:SocketAddr, port: u16) {
     if let Ok(mut stream) = TcpStream::connect(addr) {
-        stream.write(b"this message was sent via tcp port: 8080").unwrap();
+        stream.write(b"this message was sent via tcp port: {port}").unwrap();
     }
 }
 
 fn search(depth: u32) {
-    let target = "10.5.8.183";
-    let addr = SocketAddr::new(target:IpAddr, 8080);
-    send(depth: u32, addr)
+    let target = "10.4.106.49";
+    let port = 8080;
+    let ip = IpAddr::from_str(target).expect("Invalid IP address");
+    let addr = SocketAddr::new(ip, port);
 
+    send(depth, addr, port);
 }
 
 
