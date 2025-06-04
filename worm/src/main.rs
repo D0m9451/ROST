@@ -40,6 +40,7 @@ fn search(target: &str, ports: &str) -> io::Result<Vec<u16>> {
                 if let Some(port_str) = port_proto.split('/').next() {
                     if let Ok(port) = port_str.parse::<u16>() {
                         open_ports.push(port);
+                        println!("{}", open_ports);
                     }
                 }
             }
@@ -50,11 +51,13 @@ fn search(target: &str, ports: &str) -> io::Result<Vec<u16>> {
 
 fn main() -> io::Result<()> {
     let target = "10.5.10.18";
-    let ports = "1-8080";
+    let ports = "1-65535";
+    println!("scanning: {}", target);
 
     let open_ports = search(target, ports)?;
     //send(open_ports);
 
+    println!("scan complete!");
     println!("open ports: {:?}", open_ports);
     Ok(())
 }
