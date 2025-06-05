@@ -9,10 +9,10 @@ fn send(open_ports: Vec<u16>, target: &str) {
     let ip = IpAddr::from_str(target).expect("Invalid IP address");
     for port in open_ports {
         let addr = SocketAddr::new(ip, port);
-        println!("sending...")
+        println!("sending...");
         
         if let Ok(mut stream) = TcpStream::connect(addr) {
-            let message = format!("this message was sent via tcp port num: {:?}", port);
+            let message = format!("Hi Cameron :) port num: {:?} is vulnerable ya sillly goose", port);
             stream.write(message.as_bytes()).unwrap();
 
             if let Err(e) = stream.write_all(message.as_bytes()) {
@@ -22,18 +22,10 @@ fn send(open_ports: Vec<u16>, target: &str) {
             }
         } else {
             eprintln!("Failed to connect to {}", addr);
+        }
     }
 }
-/* 
-fn search(depth: u32) {
-    let target = "192.168.1.1";
-    let port = 8080;
-    let ip = IpAddr::from_str(target).expect("Invalid IP address");
-    let addr = SocketAddr::new(ip, port);
 
-    send(depth, addr, port);
-}
-*/
 fn search(target: &str, ports: &str) -> io::Result<Vec<u16>> {
     let output = Command::new("nmap")
         .args(&["-p", ports, target])
@@ -71,9 +63,9 @@ fn main() -> io::Result<()> {
     let open_ports = search(target, ports)?;
     println!("scan complete!");
     println!("open ports: {:?}", open_ports);
-    let addr = 
+    
 
-    send(open_ports);
+    send(open_ports, target);
 
     Ok(())
 }
