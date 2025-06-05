@@ -4,13 +4,26 @@ use std::str::FromStr;
 use std::process::Command;
 use std::io::{self, BufRead};
 
-/*
-fn send(open_ports: Vec<u16>) {
-    if let Ok(mut stream) = TcpStream::connect(addr) {
-        let message = format!("this message was sent via tcp port: {}", port);
-        stream.write(message.as_bytes()).unwrap();
+
+fn send(open_ports: Vec<u16>, target: &str) {
+    let ip = IpAddr::from_str(target).expect("Invalid IP address");
+    for port in open_ports {
+        let addr = SocketAddr::new(ip, port);
+        println!("sending...")
+        
+        if let Ok(mut stream) = TcpStream::connect(addr) {
+            let message = format!("this message was sent via tcp port num: {:?}", port);
+            stream.write(message.as_bytes()).unwrap();
+
+            if let Err(e) = stream.write_all(message.as_bytes()) {
+                eprintln!("Failed to send message to {}: {}", addr, e);
+            } else {
+                println!("Message sent to {}", addr);
+            }
+        } else {
+            eprintln!("Failed to connect to {}", addr);
     }
-}*/
+}
 /* 
 fn search(depth: u32) {
     let target = "192.168.1.1";
@@ -40,7 +53,7 @@ fn search(target: &str, ports: &str) -> io::Result<Vec<u16>> {
                 if let Some(port_str) = port_proto.split('/').next() {
                     if let Ok(port) = port_str.parse::<u16>() {
                         open_ports.push(port);
-                        println!("{}", open_ports);
+                        println!("{:?}", open_ports);
                     }
                 }
             }
@@ -50,14 +63,17 @@ fn search(target: &str, ports: &str) -> io::Result<Vec<u16>> {
 }
 
 fn main() -> io::Result<()> {
-    let target = "10.5.10.18";
+    let target = "10.4.103.254";
     let ports = "1-65535";
+    let ip = IpAddr::from_str(target).expect("Invalid IP address");
     println!("scanning: {}", target);
 
     let open_ports = search(target, ports)?;
-    //send(open_ports);
-
     println!("scan complete!");
     println!("open ports: {:?}", open_ports);
+    let addr = 
+
+    send(open_ports);
+
     Ok(())
 }
