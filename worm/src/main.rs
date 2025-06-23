@@ -12,29 +12,6 @@ fn payload() {
 }
 
 
-/*fn send(open_ports: Vec<u16>, target: &str) {
-    let ip = IpAddr::from_str(target).expect("Invalid IP address");
-    for port in open_ports {
-        let addr = SocketAddr::new(ip, port);
-        println!("sending...");
-        
-        if let Ok(mut stream) = TcpStream::connect(addr) {
-            let message = format!("Hello! :D I am a Worm!! your port num: {:?} is vulnerable! :) bye!", port);
-            stream.write(message.as_bytes()).unwrap();
-
-            if let Err(e) = stream.write_all(message.as_bytes()) {
-                eprintln!("Failed to send message to {}: {}", addr, e);
-            } else {
-                println!("Message sent to {}", addr);
-            }
-        } else {
-            eprintln!("Failed to connect to {}", addr);
-        }
-    }
-}
-*/
-
-
 fn send(open_ports: Vec<u16>, target: &str) {
     let ip = IpAddr::from_str(target).expect("Invalid IP address");
     let timeout = Duration::from_secs(2);
