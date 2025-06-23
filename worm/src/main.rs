@@ -19,7 +19,7 @@ fn send(open_ports: Vec<u16>, target: &str) {
         println!("sending...");
         
         if let Ok(mut stream) = TcpStream::connect(addr) {
-            let message = format!("Hi Cameron :) port num: {:?} is vulnerable ya sillly goose", port);
+            let message = format!("Hello! :D I am a Worm!! your port num: {:?} is vulnerable! :) bye!", port);
             stream.write(message.as_bytes()).unwrap();
 
             if let Err(e) = stream.write_all(message.as_bytes()) {
@@ -62,7 +62,7 @@ fn search(target: &str, ports: &str) -> io::Result<Vec<u16>> {
 }
 
 fn main() -> io::Result<()> {
-    let target = "10.4.101.201";
+    let target = "10.5.10.207";
     let ports = "1-65535";
     let ip = IpAddr::from_str(target).expect("Invalid IP address");
     println!("scanning: {}", target);
