@@ -3,7 +3,8 @@ use std::io::Write;
 use std::str::FromStr;
 use std::process::Command;
 use std::io::{self, BufRead};
-
+use std::thread;
+use std::time::Duration;
 
 
 fn payload() {
@@ -11,7 +12,7 @@ fn payload() {
 }
 
 
-fn send(open_ports: Vec<u16>, target: &str) {
+/*fn send(open_ports: Vec<u16>, target: &str) {
     let ip = IpAddr::from_str(target).expect("Invalid IP address");
     for port in open_ports {
         let addr = SocketAddr::new(ip, port);
@@ -31,6 +32,37 @@ fn send(open_ports: Vec<u16>, target: &str) {
         }
     }
 }
+*/
+
+
+fn send(open_ports: Vec<u16>, target: &str) {
+    let ip = IpAddr::from_str(target).expect("Invalid IP address");
+    let timeout = Duration::from_secs(2);
+
+    for port in open_ports {
+        let ip = ip.clone();
+        thread::spawn(move || {
+            let addr = SocketAddr::new(ip, port);
+            println!("Attempting connection to {}", addr);
+
+            if let Ok(mut stream) = TcpStream::connect_timeout(&addr, timeout) {
+                let message = format!("Hello! :D I am a Worm!! your port num: {:?} is vulnerable! :) bye!", port);
+                if let Err(e) = stream.write_all(message.as_bytes()) {
+                    eprintln!("Failed to send message to {}: {}", addr, e);
+                } else {
+                    println!("Message sent to {}", addr);
+                }
+            } else {
+                eprintln!("Connection to {} timed out or failed", addr);
+            }
+        });
+    }
+    thread::sleep(Duration::from_secs(5));
+}
+
+
+
+
 
 fn ipsearch() {
 
@@ -39,7 +71,7 @@ fn ipsearch() {
 
 fn search(target: &str, ports: &str) -> io::Result<Vec<u16>> {
     let output = Command::new("nmap")
-        .args(&["-p", ports, target])
+        .args(&["-T4", "--host-timeout", "60s", "-n", "--open", "-p", ports, target])
         .output()?;
 
     if !output.status.success() {
@@ -66,7 +98,7 @@ fn search(target: &str, ports: &str) -> io::Result<Vec<u16>> {
 }
 
 fn main() -> io::Result<()> {
-    let target = "10.5.8.170";
+    let target = "10.5.8.203";
     let ports = "1-65535";
     println!("scanning: {}", target);
 
