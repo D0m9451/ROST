@@ -11,7 +11,6 @@ fn payload() {
 }
 
 
-
 fn send(open_ports: Vec<u16>, target: &str) {
     let ip = IpAddr::from_str(target).expect("Invalid IP address");
     for port in open_ports {
@@ -32,6 +31,11 @@ fn send(open_ports: Vec<u16>, target: &str) {
         }
     }
 }
+
+fn ipsearch() {
+
+}
+
 
 fn search(target: &str, ports: &str) -> io::Result<Vec<u16>> {
     let output = Command::new("nmap")
@@ -62,9 +66,8 @@ fn search(target: &str, ports: &str) -> io::Result<Vec<u16>> {
 }
 
 fn main() -> io::Result<()> {
-    let target = "10.5.10.207";
+    let target = "10.5.8.170";
     let ports = "1-65535";
-    let ip = IpAddr::from_str(target).expect("Invalid IP address");
     println!("scanning: {}", target);
 
     let open_ports = search(target, ports)?;
