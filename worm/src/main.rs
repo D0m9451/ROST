@@ -75,7 +75,7 @@ fn search(target: &str, ports: &str) -> io::Result<Vec<u16>> {
 }
 
 fn main() -> io::Result<()> {
-    let target = "10.5.8.203";
+    let target = "10.5.8.150";
     let ports = "1-65535";
     println!("scanning: {}", target);
 
