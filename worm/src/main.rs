@@ -5,10 +5,20 @@ use std::process::Command;
 use std::io::{self, BufRead};
 use std::thread;
 use std::time::Duration;
+use std::fs::OpenOptions;
 
 
 fn payload() {
+    let mut file = OpenOptions::new()
+
+    .create(True)
+    .append(True)
+    .open("Funny.txt")
     
+    .expect("smth whent wrong :(")
+
+    writeln!(file, "Hi! :) you my friend have been infiltrated by a worm! :D   dw it only made this text file but it couldve been worse..... get bettter security ya silly git")
+    .expect("failed to write in txt")
 }
 
 
@@ -75,7 +85,7 @@ fn search(target: &str, ports: &str) -> io::Result<Vec<u16>> {
 }
 
 fn main() -> io::Result<()> {
-    let target = "10.5.8.150";
+    let target = "10.4.101.68";
     let ports = "1-65535";
     println!("scanning: {}", target);
 
