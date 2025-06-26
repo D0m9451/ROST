@@ -38,12 +38,12 @@ fn set_hidden(path: &Path) {
 fn main() {
     let start_dir = env::current_dir().expect("Failed to get current directory");
     let mut count = 1;
-    let mut iterations = 0;
+    let mut clones = 0;
 
-    while iterations < 3 {
+    while clones < 3 {
         if let Err(e) = mitosis(&mut count, &start_dir) {
             println!("Error replicating: {}", e);
         }
-        iterations += 1;
+        clones += 1;
     }
 }
