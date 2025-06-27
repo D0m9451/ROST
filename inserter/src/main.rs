@@ -6,7 +6,7 @@ use std::time::Duration;
 use std::thread::sleep;
 
 fn main() {
-    let key: String = String::from("msi387jedudte83");
+    let key: String = String::from("1783oh87fqif7u4yo82uyqufh87yi");
 
 
     println!("WARNING: make sure there ar NO SPACES in the file paths you input");
