@@ -49,5 +49,5 @@ fn main() {
         .expect("Failed to write file data to file");
 
     println!("Succsufully inserted {} into {} to {}", img, file, new);
-    sleep(Duration::from_secs(5))
+    sleep(Duration::from_secs(2))
 }

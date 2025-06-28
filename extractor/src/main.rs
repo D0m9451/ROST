@@ -1,6 +1,9 @@
 use std::fs::File;
 use std::io::{Read, Write};
 use text_io::read;
+use std::time::Duration;
+use std::thread::sleep;
+
 
 fn main() {
     let key = b"1783oh87fqif7u4yo82uyqufh87yi";
@@ -31,13 +34,11 @@ fn main() {
             rfile.write_all(vdata)
                 .expect("Failed to write extracted data to file");
 
-            println!(
-                "Successfully extracted data from {} to {}",
-                path, efile
-            );
+            println!("Successfully extracted data from {} to {}", path, efile);
         }
         None => {
             println!("Key not found/incorrect in {}", path);
         }
     }
+    sleep(Duration::from_secs(2))
 }
